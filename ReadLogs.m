@@ -18,9 +18,9 @@ for i = 1:length(rho)-1
     dists = [dists, dist];
 end
 
-med = median(dists);
 dists = sort(dists);
-umb = dists(44);
+dists = dists(1:64);
+umb = mean(dists);
 auxRho = [rho(x2)];
 auxTheta = [theta(x2)];
 
