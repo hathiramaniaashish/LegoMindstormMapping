@@ -1,23 +1,17 @@
-% Script para obtener gráfica polar, a partir de un fichero log con un 
-% ángulo y respectiva su distanica
+% Script para suavizar medidas de un array, pasandolo por un 
+% filtro (kernel)
 function [rads] = softFilter(rads)
 % IN: 
-%   filename - log filename [char]
+%   rads - log de escaneo con medidas de radios
 % OUT: 
-%   nothing
+%   rads - medidas de radios suavizados
 % EXAMPLE:
-%   PlotEnvironment('log_file.txt')
+%   softFilter(calib_scan);
 
     fileSize = size(rads);
     fileSize = fileSize(1);
     
     res = rads;
-
-%     figure(1)
-%     subplot(3,2,1) % 2 rows, 1 column, first position
-%     polarplot(rads);
-%     subplot(3,2,2)
-%     plot(rads)
 
     kernel = [1 4 8 4 1];
     k_size = size(kernel);
@@ -28,14 +22,12 @@ function [rads] = softFilter(rads)
         accum = 0;
         for j = 1:k_size
             accum = accum + (rads(i - hf_k_size + j) * kernel(j));
-%             accum = accum + rads(i + j + 1) - rads(i + j);
 
         end
         res(i) = accum / sum(kernel, "all");
     end
 
-%     abs(min(res))
-    rads = res; % + abs(min(res));
+    rads = res;
     extreme_error = rads(fileSize - hf_k_size) - rads(hf_k_size);
     for k = 1:hf_k_size
         update_level = (k / k_size);

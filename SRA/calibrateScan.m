@@ -1,12 +1,16 @@
-% Script para obtener gráfica polar, a partir de un fichero log con un 
-% ángulo y respectiva su distanica
+% Script para calibrar medidas polares, en base a un log principal, 
+% un log secundario, y la posición real de escaneo del segundo log
+% respecto a la posición del log principal
 function [res] = calibrateScan(rads_1, rads_2, pos_2)
 % IN: 
-%   filename - log filename [char]
+%   rads_1 - log de escaneo principal con medidas de radios
+%   rads_2 - log de escaneo secundario con medidas de radios
+%   pos_2 - posición real de escaneo del segundo log respecto a la
+%   posición del log principal
 % OUT: 
-%   nothing
+%   res - medidas calibradas
 % EXAMPLE:
-%   PlotEnvironment('log_file.txt')
+%   calibrateScan(raw_scan_1, raw_scan_2, [30 30]);
 
     fileSize = size(rads_1);
     fileSize = fileSize(1);
@@ -28,8 +32,6 @@ function [res] = calibrateScan(rads_1, rads_2, pos_2)
 
         if error <= 1.2 && error >= 0.8
             res(i) = error * res(i);
-%         elseif new_rad < res(i)
-%             res(i) = new_rad;
         end
 
     end
